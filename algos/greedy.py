@@ -6,6 +6,8 @@ def determineLibraryScore(library, availableDays, used_books_idx):
     if (total_books_until_end < 0):
         return 0
     else:
+        #remove used books
+        library.books[:] = [book for book in library.books if not used_books_idx[book.bookIndex]]
         library.books = library.books[0:total_books_until_end]
         return sum(list(map(lambda book: book.bookScore, library.books)))
 
@@ -33,7 +35,8 @@ def greedy(input_data):
         used_libraries_idx[used_library.idx] = True
         available_days -= used_library.signUpDaysNeeded
         count += 1
-        # todo: update used_books_idx
+        for book in used_library.books:
+            used_books_idx[book.bookIndex] = True
         used_libraries.append(used_library)
 
     return used_libraries
