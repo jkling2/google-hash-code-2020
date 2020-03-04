@@ -32,8 +32,8 @@ def main(file):
     # write in as out
     # outputData = OutputData(inputData.libraries)
     print("Process Data")
-    outputData = OutputData(heuristics.sortHeuristicLibraryBook(inputData))
-    #outputData = OutputData(greedy.greedy(inputData))
+    #outputData = OutputData(heuristics.sortHeuristicLibraryBook(inputData))
+    outputData = OutputData(greedy.greedy(inputData))
 
     # write data to file
     print("Write Data")

@@ -21,3 +21,4 @@ def sortHeuristicBooks(input_data):
 def sortBooksByBookScore(library):
     books = library.books
     books.sort(key = sortByBookScore, reverse = True)
+    return library
