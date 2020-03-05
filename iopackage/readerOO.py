@@ -6,17 +6,19 @@ def readData(filePath):
     books = dict()
     libraries = []
     daysForScanning = 0
+    max_score = 0
     with open(filePath, 'r') as f:
         lines = f.read().splitlines()
         first_line = lines[0].split(' ')
         daysForScanning = int(first_line[2])
         second_line = lines[1].split(' ')
         for idx, el in enumerate(second_line):
+            max_score += int(el)
             books[idx] = Book(idx, int(el))
         for j in range(int(first_line[1])):
             lineIndex = 2 + (j * 2)
             libraries.append(readLibrary(books, j, lines[lineIndex].split(' '), lines[lineIndex + 1].split(' ')))
-
+    print("Max score = {}".format(max_score))
     return InputData(daysForScanning, books.values(), libraries);
 
 
