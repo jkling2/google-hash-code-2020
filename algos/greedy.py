@@ -16,6 +16,9 @@ def scoreLibGreedy(library, availableDays, used_books_idx):
         #library.books = library.books[0:total_books_until_end]
         #return sum(list(map(lambda book: book.bookScore, library.books)))
 
+def scoreLibGreedyRedSignUpTime(library, availableDays, used_books_idx):
+    return scoreLibGreedy(library, availableDays, used_books_idx) / library.signUpDaysNeeded
+
 
 def scoreLibSize(library, availableDays, used_books_idx):
     lib_score = scoreLibGreedy(library, availableDays, used_books_idx)
@@ -53,7 +56,7 @@ def scoreUsingBookOccurrence(library, availableDays, used_books_idx, book_occure
 def determineLibraryScore(library, availableDays, used_books_idx, book_occurences):
     #remove used books
     library.books[:] = [book for book in library.books if not used_books_idx[book.bookIndex]]
-    return scoreUsingBookOccurrence(library, availableDays, used_books_idx, book_occurences)
+    return scoreLibGreedyRedSignUpTime(library, availableDays, used_books_idx)
 
 
 def greedy(input_data):
@@ -79,14 +82,14 @@ def greedy(input_data):
             if library_score > max_lib_score:
                 used_library = lib
                 max_lib_score = library_score
-
+        print("Available Days={}, Score={}".format(available_days, max_lib_score))
         used_libraries_idx[used_library.idx] = True
         total_books_until_end = (available_days - used_library.signUpDaysNeeded) * used_library.booksPerDay
         for idx, book in enumerate(used_library.books):
             book_occurences[book.bookIndex] -= 1
             if (idx < total_books_until_end):
                 used_books_idx[book.bookIndex] = True
-        used_library.books = used_library.books[0:total_books_until_end]
+        #used_library.books = used_library.books[0:total_books_until_end]
         available_days -= used_library.signUpDaysNeeded
         count += 1
         used_libraries.append(used_library)
