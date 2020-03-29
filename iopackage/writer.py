@@ -1,40 +1,27 @@
-import sys
+from dataobjects.OutputData import OutputData
 
-def write(output_file, list):
-    outputLines = []
 
-    numberOfLibs = len(list)
-
+def write_data(output_file, output_data):
+    """
+    writes the provided output data to the output file considering a specific output format
+    :param str output_file : The path to the file to which the output string is written
+    :param OutputData output_data : The output data that is written
+    :return: the string array containing the output lines
+    """
+    output_lines = []
+    number_of_libs = len(output_data.libraries)
     # 1: <number of libraries>
-    outputLines.append(str(numberOfLibs) + "\n")
-    # 2: 
-    #outputLines.append("\n")
-
-    for lib in list:
-        libIndex = lib[0]
-        bookList = lib[1]
-        numberOfBooks = len(bookList)
-
-        # 3: <Library Index> <Number of Books>
-        outputLines.append(str(libIndex) + " " + str(numberOfBooks) + "\n")
-        # 4:
-        #outputLines.append("\n")
-
-        bookLine = ""
-        for book in bookList:
-            bookLine += str(book) + " "
-
-        bookLine = bookLine[:-1]
-        
-        # 5: <Array of Books>
-        outputLines.append(bookLine + "\n")
-
-        # 6: 
-        #outputLines.append("\n")
-
-    
+    output_lines.append(str(number_of_libs) + "\n")
+    for lib in output_data.libraries:
+        number_of_books = len(lib.books)
+        # 2: <Library Index> <Number of Books>
+        output_lines.append(str(lib.idx) + " " + str(number_of_books) + "\n")
+        book_line = ""
+        for book in lib.books:
+            book_line += str(book.idx) + " "
+        book_line = book_line[:-1]
+        # 3: <Array of Books>
+        output_lines.append(book_line + "\n")
     file = open(output_file, "w")
-    file.write("".join(outputLines))
-
-if __name__ == "__main__":
-    write('test.out', [[1, [5, 2, 3]], [0, [0, 1, 2, 3, 4]]])
+    file.write("".join(output_lines))
+    return output_lines
