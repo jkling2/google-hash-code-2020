@@ -1,12 +1,13 @@
 from algos.heuristics import sort_books_by_book_score_desc
 from dataobjects.InputData import InputData
 from dataobjects.Library import Library
+from dataobjects.Algo import Algo
 import math
 
 
 def score_lib_greedy(library, available_days):
     """
-    greedy algorithm to score libraries
+    greedy algorithm to score libraries (Algo.py.GREEDY)
     :param Library library: the libraries to score
     :param int available_days: the days left
     :return: the score of the library
@@ -27,7 +28,7 @@ def score_lib_greedy(library, available_days):
 
 def score_lib_greedy_red_sign_up_time(library, available_days):
     """
-    uses the greedy algorithm's score and applies the sign up time needed
+    uses the greedy algorithm's score and applies the sign up time needed (Algo.py.GREEDY_SIGN_UP_TIME)
     :param Library library: the libraries to score
     :param int available_days: the days left
     :return: the score of the library
@@ -38,7 +39,7 @@ def score_lib_greedy_red_sign_up_time(library, available_days):
 
 def score_greedy_total_books(library, available_days):
     """
-    uses the greedy algorithm's score and applies the total amount of books
+    uses the greedy algorithm's score and applies the total amount of books (Algo.py.GREEDY_TOTAL_BOOKS)
     :param Library library: the libraries to score
     :param int available_days: the days left
     :return: the score of the library
@@ -49,7 +50,7 @@ def score_greedy_total_books(library, available_days):
 
 def score_greedy_used_books(library, available_days):
     """
-    uses the greedy algorithm's score and applies the amount of used books
+    uses the greedy algorithm's score and applies the amount of used books (Algo.py.GREEDY_USED_BOOKS)
     :param Library library: the libraries to score
     :param int available_days: the days left
     :return: the score of the library
@@ -62,7 +63,7 @@ def score_greedy_used_books(library, available_days):
 
 def score_average_book_score(library, available_days):
     """
-    determines the library score based on the average book score
+    determines the library score based on the average book score (Algo.py.AVERAGE_BOOK_SCORE)
     :param Library library: the libraries to score
     :param int available_days: the days left
     :return: the score of the library
@@ -78,7 +79,7 @@ def score_average_book_score(library, available_days):
 
 def score_using_book_occurrence(library, available_days, book_occurrences):
     """
-    determines the library score based on the available occurrence of each book
+    determines the library score based on the available occurrence of each book (Algo.py.BOOK_OCCURRENCE)
     :param Library library: the libraries to score
     :param int available_days: the days left
     :param int[] book_occurrences: the available occurrences of each book
@@ -99,10 +100,10 @@ def score_using_book_occurrence(library, available_days, book_occurrences):
                 lib_score += (book.score / math.sqrt(book_occurrences[book.idx]))
         return lib_score
 
-
-def determine_library_score(library, available_days, used_books_idx, book_occurrences):
+def determine_library_score(algo, library, available_days, used_books_idx, book_occurrences):
     """
     determines the library score based on a certain algorithm
+    :param Algo algo : The algorithm to use
     :param Library library: the libraries to score
     :param int available_days: the days left
     :param bool[] used_books_idx: the indices of the books that were already used
@@ -112,14 +113,26 @@ def determine_library_score(library, available_days, used_books_idx, book_occurr
     """
     # remove used books
     library.books[:] = [book for book in library.books if not used_books_idx[book.idx]]
-    return score_lib_greedy_red_sign_up_time(library, available_days, used_books_idx)
+    if algo.name is Algo.GREEDY.name:
+        return score_lib_greedy(library, available_days)
+    elif algo.name == Algo.GREEDY_SIGN_UP_TIME.name:
+        return score_lib_greedy_red_sign_up_time(library, available_days)
+    elif algo.name == Algo.GREEDY_TOTAL_BOOKS.name:
+        return score_greedy_total_books(library, available_days)
+    elif algo.name == Algo.GREEDY_USED_BOOKS.name:
+        return score_greedy_used_books(library, available_days)
+    elif algo.name == Algo.AVERAGE_BOOK_SCORE.name:
+        return score_average_book_score(library, available_days)
+    elif algo.name == Algo.BOOK_OCCURRENCE.name:
+        return score_using_book_occurrence(library, available_days, book_occurrences)
 
 
-def greedy(input_data):
+def greedy(input_data, algo):
     """
     sort libraries by a score that uses the attributes provided by the input data (available days, sign up days
     needed and the library's books)
     :param InputData input_data : The input data
+    :param Algo algo : The algorithm to use
     :return: The libraries with contained books that are used for book registration
     :rtype: array of Library
     """
@@ -145,7 +158,8 @@ def greedy(input_data):
         for library in libraries:
             if used_libraries_idx[library.idx]:
                 continue
-            library_score = determine_library_score(library, available_days, used_books_idx, book_occurrences)
+            # TODO - why is -1 returned? FIX!
+            library_score = determine_library_score(algo, library, available_days, used_books_idx, book_occurrences)
             if library_score > max_lib_score:
                 best_library = library
                 max_lib_score = library_score

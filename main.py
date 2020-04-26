@@ -4,11 +4,13 @@ import iopackage.writer as writer
 import test.score as score
 import algos.greedy as greedy
 from dataobjects.OutputData import OutputData
+from dataobjects.Algo import Algo
+from enum import Enum
 
 
-def main(file_name):
-    input_file = 'data/' + file_name + '.txt'
-    output_file = 'data/' + file_name + '.out'
+def main(file_name, algo):
+    input_file = 'data/' + file_name.value + '.txt'
+    output_file = 'data/' + file_name.value + '.out'
 
     # read data
     print("Read Data")
@@ -18,7 +20,7 @@ def main(file_name):
     print("Process Data")
     # outputData = OutputData(inputData.libraries)
     # outputData = OutputData(heuristics.sortHeuristicLibraryBook(inputData))
-    output_data = OutputData(greedy.greedy(input_data))
+    output_data = OutputData(greedy.greedy(input_data, algo))
 
     # write data to file
     print("Write Data")
@@ -31,38 +33,26 @@ def main(file_name):
     print("Done")
 
 
-FILE_A = "a_example"
-FILE_B = "b_read_on"
-FILE_C = "c_incunabula"
-FILE_D = "d_tough_choices"
-FILE_E = "e_so_many_books"
-FILE_F = "f_libraries_of_the_world"
-
-
-def get_file_name_from_letter(letter):
-    letter = letter.upper()
-    if letter == 'A':
-        return FILE_A
-    elif letter == 'B':
-        return FILE_B
-    elif letter == 'C':
-        return FILE_C
-    elif letter == 'D':
-        return FILE_D
-    elif letter == 'E':
-        return FILE_E
-    elif letter == 'F':
-        return FILE_F
+class File(Enum):
+    A = "a_example"
+    B = "b_read_on"
+    C = "c_incunabula"
+    D = "d_tough_choices"
+    E = "e_so_many_books"
+    F = "f_libraries_of_the_world"
 
 
 if __name__ == '__main__':
     file = ''
+    algo = 0
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('letter', type=str, default=None)
+    argparser.add_argument('--file', type=str, default=None)
+    argparser.add_argument('--algo', type=int, default=0)
     args = argparser.parse_args()
 
-    if args.letter:
-        file = get_file_name_from_letter(args.letter)
-        print("Processing {}".format(file))
+    if args.file and args.algo:
+        file = File[args.file]
+        algo = Algo(args.algo)
+        print("Processing {} ({}) with algo {}".format(file.value, file, algo))
 
-    main(file)
+    main(file, algo)
