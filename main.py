@@ -43,16 +43,13 @@ class File(Enum):
 
 
 if __name__ == '__main__':
-    file = ''
-    algo = 0
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--file', type=str, default=None)
-    argparser.add_argument('--algo', type=int, default=0)
+    argparser.add_argument('--file', type=str, default=None, required=True, choices='ABCDEF')
+    argparser.add_argument('--algo', type=int, default=0, required=True, choices=[e.value for e in Algo], help= " - ".join([(str(e.value) + ": " + e.name) for e in Algo]))
     args = argparser.parse_args()
 
-    if args.file and args.algo:
-        file = File[args.file]
-        algo = Algo(args.algo)
-        print("Processing {} ({}) with algo {}".format(file.value, file, algo))
+    file = File[args.file]
+    algo = Algo(args.algo)
+    print("Processing {} ({}) with algo {}".format(file.value, file, algo))
 
     main(file, algo)
