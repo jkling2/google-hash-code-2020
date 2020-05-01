@@ -58,7 +58,7 @@ def score_greedy_used_books(library, available_days):
     """
     total_books_until_end = min((available_days - library.sign_up_days_needed) * library.books_per_day,
                                 len(library.books))
-    return score_lib_greedy(library, available_days) * total_books_until_end
+    return score_lib_greedy(library, available_days) * max(0, total_books_until_end)
 
 
 def score_average_book_score(library, available_days):
