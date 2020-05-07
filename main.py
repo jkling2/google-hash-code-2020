@@ -10,26 +10,24 @@ from enum import Enum
 
 def main(file_name, algo):
     input_file = 'data/' + file_name.value + '.txt'
-    output_file = 'data/' + file_name.value + '.out'
 
     # read data
     print("Read Data")
     input_data = reader.read_data(input_file)
 
-    # write in as out
     print("Process Data")
+    # write in as out
     # outputData = OutputData(inputData.libraries)
-    # outputData = OutputData(heuristics.sortHeuristicLibraryBook(inputData))
     output_data = OutputData(greedy.greedy(input_data, algo))
-
-    # write data to file
-    print("Write Data")
-    writer.write_data(output_file, output_data)
 
     # score
     print("Score")
     total_score = score.calculate_score(input_data.available_days, output_data, len(input_data.books))
     print("score={}".format(total_score))
+
+    # write data to file
+    print("Write Data")
+    writer.write_data(file_name.value, output_data, total_score)
     print("Done")
 
 
