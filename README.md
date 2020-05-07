@@ -1,10 +1,12 @@
-# google-hash-code-2020
+# google-hash-code-2020: Qualification Round - Google Books
 Here, I provide my code from the extended round of the 2020's Google Hash Code Challenge.
 
 The total score is **26,863,352**.
 
 ## Problem Statement
-TODO
+Digitalizing Books requires scanning them in the library they are located at. The challenge is to scan as many books as possible in the given amount of time over all available libraries considering each book's value. Each library needs a certain amount of days to register for the scanning process (sign-up time). This sign up process cannot be done in parallel for multiple libraries. After that a library can scan a certain amount of books per day. Once registered, libraries can scan books in parallel. Each books has a certain numerical value that counts towards the total score. Books can be located in multiple libraries, however, they only need to be scanned once, hence they count only once towards the total score.
+
+The full problem can be found on [Google Hash Code Archive](https://codingcompetitions.withgoogle.com/hashcode/archive).
 
 ## Usage
 ```bash
