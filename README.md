@@ -14,7 +14,7 @@ usage: main.py [-h] --file {A,B,C,D,E,F} --algo {1,2,3,4,5,6}
 ```
 The program requires a valid file and a valid algorithm. 
 
-Valid file names are **A**, **B**, **C**, **D**, **E**, and **F**.
+Valid file names are **A**, **B**, **C**, **D**, **E**, and **F**. They can be found under the [data section](https://github.com/jkling2/google-hash-code-2020/tree/master/data) of this repo.
 
 Valid algorithm numbers are **1**, **2**, **3**, **4**, **5**, **6**. They correspond to the following algorithm name:
 * 1: GREEDY - greedy algorithm that determines the best library based on the total score a library has, considering the days left.
